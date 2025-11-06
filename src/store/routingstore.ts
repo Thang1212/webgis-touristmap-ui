@@ -20,11 +20,10 @@ export interface Routing {
     setDirection: (direction: any) => void;
     fetchDirections: (profile?: 'driving-traffic' | 'driving' | 'walking' | 'cycling') => Promise<void>;
     clearRoute: () => void;
-    setPickMode: (mode: 'none' | 'origin' | 'destination') => void; // ⭐ NEW
-    setUseGPS: (useGPS: boolean) => void;
+    setPickMode: (mode: 'none' | 'origin' | 'destination') => void; 
 }
 
-const MAPBOX_ACCESS_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN || 'your_token_here';
+const MAPBOX_ACCESS_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 export const useRoutingStore = create<Routing>((set, get) => ({
     origin: {
@@ -35,7 +34,7 @@ export const useRoutingStore = create<Routing>((set, get) => ({
         type: 'Point',
         coordinates: [0, 0]
     },
-    useGPS: true,
+    useGPS: false,
     direction: null,
     loading: false,
     error: null,

@@ -68,3 +68,44 @@ button:focus-visible {
 } */
  
 @import "tailwindcss";
+/* Force z-index cho markers theo priority */
+.leaflet-marker-icon.custom-marker {
+  transition: none !important;
+}
+
+/* Priority thấp */
+.leaflet-marker-icon.priority-level-0 {
+  z-index: 100000 !important;
+}
+
+/* Priority trung bình */
+.leaflet-marker-icon.priority-level-1,
+.leaflet-marker-icon.priority-level-2,
+.leaflet-marker-icon.priority-level-3,
+.leaflet-marker-icon.priority-level-4 {
+  z-index: 200000 !important;
+}
+
+/* Priority cao */
+.leaflet-marker-icon.priority-level-5,
+.leaflet-marker-icon.priority-level-6,
+.leaflet-marker-icon.priority-level-7,
+.leaflet-marker-icon.priority-level-8,
+.leaflet-marker-icon.priority-level-9 {
+  z-index: 300000 !important;
+}
+
+/* Priority rất cao */
+.leaflet-marker-icon[class*="priority-level-"]:not(.priority-level-0):not(.priority-level-1):not(.priority-level-2):not(.priority-level-3):not(.priority-level-4) {
+  z-index: 500000 !important;
+}
+
+/* Marker được chọn luôn ở trên cùng */
+.leaflet-marker-icon.selected-marker {
+  z-index: 999999 !important;
+}
+
+/* Force tất cả child elements */
+.leaflet-marker-icon.custom-marker > * {
+  position: relative;
+}

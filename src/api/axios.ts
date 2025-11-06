@@ -64,7 +64,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response: AxiosResponse) => {
     if (import.meta.env.DEV) {
-      console.log('✅ Response:', response.config.url, response.status);
+      console.log(' Response:', response.config.url, response.status);
     }
     return response;
   },
@@ -96,28 +96,23 @@ api.interceptors.response.use(
           });
       }
 
-      // Mark as retrying
       originalRequest._retry = true;
       isRefreshing = true;
 
       console.log('🔄 Refreshing token...');
 
       try {
-        // Use separate axios instance for refresh
         await refreshApi.post('/auth/refresh');
 
-        console.log('✅ Token refreshed successfully');
+        console.log(' Token refreshed successfully');
 
-        // Process all queued requests
         processQueue();
         isRefreshing = false;
 
-        // Retry original request
         return api(originalRequest);
       } catch (refreshError) {
-        console.error('❌ Token refresh failed');
+        console.error(' Token refresh failed');
 
-        // Reject all queued requests
         processQueue(refreshError);
         isRefreshing = false;
 
@@ -135,11 +130,11 @@ api.interceptors.response.use(
 
     // Handle other errors
     if (error.response) {
-      console.error(`❌ Error ${error.response.status}:`, error.response.data);
+      console.error(` Error ${error.response.status}:`, error.response.data);
     } else if (error.request) {
-      console.error('❌ No response received:', error.request);
+      console.error(' No response received:', error.request);
     } else {
-      console.error('❌ Error:', error.message);
+      console.error(' Error:', error.message);
     }
 
     return Promise.reject(error);

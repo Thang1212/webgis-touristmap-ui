@@ -27,17 +27,17 @@ export const useMapInitialization = (
   }, [selectedPlace]);
 
   // Auto-fit bounds when places change
-  useEffect(() => {
-    if (mapInstance && filteredPlaces.length > 0) {
-      const bounds = L.latLngBounds(
-        filteredPlaces.map((p) => [
-          p.location.coordinates[1],
-          p.location.coordinates[0],
-        ])
-      );
-      mapInstance.fitBounds(bounds, { padding: MAP_CONFIG.fitBoundsPadding });
-    }
-  }, [filteredPlaces, mapInstance]);
+  // useEffect(() => {
+  //   if (mapInstance && filteredPlaces.length > 0) {
+  //     const bounds = L.latLngBounds(
+  //       filteredPlaces.map((p) => [
+  //         p.location.coordinates[1],
+  //         p.location.coordinates[0],
+  //       ])
+  //     );
+  //     mapInstance.fitBounds(bounds, { padding: MAP_CONFIG.fitBoundsPadding });
+  //   }
+  // }, [filteredPlaces, mapInstance]);
 
   const setMarkerRef = useCallback((placeId: number, ref: L.Marker | null) => {
     if (ref) {

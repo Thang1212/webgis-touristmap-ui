@@ -1,13 +1,17 @@
+
 import React from "react";
 import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import { getIcon } from "../../../utils/mapIcon";
+import type { Place, Category } from "../../../store/mapstore";
 
 interface PlaceMarkerProps {
-  place: any;
+  place: Place;
   isSelected: boolean;
-  onSelect: (place: any) => void;
+  onSelect: (place: Place) => void;
   markerRef?: (ref: L.Marker | null) => void;
+  zIndexOffset?: number;
+  isPriority?: boolean; // ⭐ THÊM PROP
 }
 
 const PlaceMarker: React.FC<PlaceMarkerProps> = ({
@@ -15,16 +19,22 @@ const PlaceMarker: React.FC<PlaceMarkerProps> = ({
   isSelected,
   onSelect,
   markerRef,
+  zIndexOffset = 0,
+  isPriority = false, 
 }) => {
   const position: [number, number] = [
     place.location.coordinates[1],
     place.location.coordinates[0],
   ];
 
-  const getPrimaryCategory = (cat: string) => cat?.split(",")[0]?.trim() || "";
+  const getPrimaryCategory = (categories: Category[]): string => {
+    if (!categories || categories.length === 0) return "";
+    return categories[0].name;
+  };
 
   const getMarkerIcon = () => {
     const base = getIcon(getPrimaryCategory(place.categories));
+    const userRatings = place.userRatingsTotal || 0;
 
     if (isSelected) {
       return L.divIcon({
@@ -57,6 +67,90 @@ const PlaceMarker: React.FC<PlaceMarkerProps> = ({
         iconAnchor: base.options.iconAnchor,
       });
     }
+
+    // ⭐ PRIORITY MARKER - Visual đặc biệt
+    if (isPriority) {
+      return L.divIcon({
+        className: "priority-marker-vip",
+        html: `
+          <div style="position: relative;">
+            <!-- Glow effect -->
+            <div style="
+              position: absolute;
+              bottom: -8px; left: 50%;
+              transform: translateX(-50%);
+              width: 50px; height: 50px;
+              background: radial-gradient(circle, rgba(245,158,11,0.5) 0%, transparent 70%);
+              border-radius: 50%;
+              animation: glow-priority 2s ease-in-out infinite;">
+            </div>
+            
+            <!-- Icon chính - scale lớn hơn -->
+            <div style="transform: scale(1.4); filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">
+              ${base.options.html}
+            </div>
+            
+            <!-- Badge số lượng reviews -->
+            <div style="
+              position: absolute;
+              top: -12px; right: -12px;
+              background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+              color: white;
+              border-radius: 50%;
+              min-width: 26px; 
+              height: 26px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 11px;
+              font-weight: bold;
+              border: 3px solid white;
+              box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+              padding: 0 4px;
+              animation: pulse-badge 2s ease-in-out infinite;">
+              ${userRatings}
+            </div>
+            
+            <!-- Star badge -->
+            <div style="
+              position: absolute;
+              bottom: -8px; left: 50%;
+              transform: translateX(-50%);
+              background: white;
+              color: #f59e0b;
+              border-radius: 12px;
+              padding: 2px 6px;
+              font-size: 10px;
+              font-weight: bold;
+              border: 2px solid #f59e0b;
+              box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+              white-space: nowrap;">
+              ⭐ ${place.rating}
+            </div>
+          </div>
+          <style>
+            @keyframes glow-priority {
+              0%, 100% { 
+                opacity: 0.6; 
+                transform: translateX(-50%) scale(1); 
+              }
+              50% { 
+                opacity: 1; 
+                transform: translateX(-50%) scale(1.3); 
+              }
+            }
+            @keyframes pulse-badge {
+              0%, 100% { transform: scale(1); }
+              50% { transform: scale(1.15); }
+            }
+          </style>
+        `,
+        iconSize: [50, 80],
+        iconAnchor: [25, 80],
+      });
+    }
+
+    // ⭐ REGULAR MARKER
     return base;
   };
 
@@ -65,12 +159,20 @@ const PlaceMarker: React.FC<PlaceMarkerProps> = ({
       position={position}
       icon={getMarkerIcon()}
       ref={markerRef}
+      zIndexOffset={zIndexOffset}
       eventHandlers={{
         //click: () => onSelect(place),
       }}
     >
       <Popup maxWidth={320}>
         <div className="p-3">
+          {/* ⭐ Thêm badge priority trong popup */}
+          {isPriority && (
+            <div className="mb-3 px-3 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-lg text-center font-bold text-sm">
+              🌟 Địa điểm nổi bật
+            </div>
+          )}
+          
           {place.imageThumbnail && (
             <img
               src={place.imageThumbnail}
@@ -83,6 +185,19 @@ const PlaceMarker: React.FC<PlaceMarkerProps> = ({
             {place.name}
           </h3>
 
+          {place.categories && place.categories.length > 0 && (
+            <div className="flex flex-wrap gap-1 mb-2">
+              {place.categories.map((category) => (
+                <span
+                  key={category.id}
+                  className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full font-medium"
+                >
+                  {category.name}
+                </span>
+              ))}
+            </div>
+          )}
+
           {place.description && (
             <p className="text-sm text-gray-600 mb-2 line-clamp-2">
               {place.description}
@@ -91,7 +206,7 @@ const PlaceMarker: React.FC<PlaceMarkerProps> = ({
 
           {place.address && (
             <p className="text-xs text-gray-500 mb-3 flex items-start gap-1">
-              <span>📍</span>
+              <span>🍎</span>
               <span className="line-clamp-1">{place.address}</span>
             </p>
           )}
@@ -114,8 +229,8 @@ const PlaceMarker: React.FC<PlaceMarkerProps> = ({
 
           <div className="space-y-2">
             {place.phone && (
-              <a
-                href={`tel:${place.phone}`}
+              
+             <a   href={`tel:${place.phone}`}
                 className="block w-full text-center px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
               >
                 📞 {place.phone}

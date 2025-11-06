@@ -13,6 +13,7 @@ export const WMSLayers: React.FC<WMSLayersProps> = ({
   placesLayer,
   roadsLayer,
   cqlFilter,
+  
 }) => {
   return (
     <>

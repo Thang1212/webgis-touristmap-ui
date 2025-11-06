@@ -1,182 +1,211 @@
-import React, { use, useEffect, useState } from 'react';
-import { Users, MapPin, Home, X, Save, Mail, Phone, Globe, Clock, MapPinned } from 'lucide-react';
+
+import React, { useEffect, useState, useRef } from 'react';
+import { Users, MapPin, Home, List, MessageSquare, Video as VideoIcon } from 'lucide-react';
 import Dashboard from './components/Dashboard';
 import UserManagement from './components/UserManagement';
 import PlaceManagement from './components/PlaceManagement';
+import type { PlaceManagementRef } from './components/PlaceManagement';
+import CategoryManagement from './components/CategoryManagement';
+import ReviewManagement from './components/ReviewManagement';
+import VideoManagement from './components/VideoManagement';
+ import { UserModal } from './components/UserModal';
+import { PlaceModal } from './components/PlaceModal';
 import type { User, Place, Stats, TabType, ModalType } from '../../type/admin.types';
-import { Modal } from './components/Modal';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const AdminPage: React.FC = () => {
+  const placeManagementRef = useRef<PlaceManagementRef>(null);
+  
   const [activeTab, setActiveTab] = useState<TabType>('dashboard');
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [modalType, setModalType] = useState<ModalType>('addUser');
-  const [selectedItem, setSelectedItem] = useState<User | Place | null>(null);
-  const [users, setUsers] = useState<User[] | null>([]);
-const fetchUsers = async () => {
-  try {
-    const response = await axios.get('/api/admin');
-    const data = response.data.data.users;
-    console.log(data);
-    return data;
-  } catch (error) {
-    console.error('Error fetching users:', error);
-    return [];
-  }
-};
-  useEffect(() => {
-    fetchUsers().then(data => {
-      setUsers(data);
-    })
-  },[])
-  // Mock data theo types mới
-  const stats: Stats = {
-    totalUsers: 1234,
-    totalPlaces: 567,
-    activeUsers: 1150,
-    newUsers: 45
+  const [showUserModal, setShowUserModal] = useState<boolean>(false);
+  const [showPlaceModal, setShowPlaceModal] = useState<boolean>(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
+  const [users, setUsers] = useState<User[]>([]);
+  const [places, setPlaces] = useState<Place[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [stats, setStats] = useState<Stats>({
+    totalUsers: 0,
+    totalPlaces: 0,
+    activeUsers: 0,
+    newUsers: 0
+  });
+
+  // Fetch Users
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get('/api/admin');
+      const data = response.data.data.users;
+      setUsers(data || []);
+      return data;
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      toast.error('Không thể tải danh sách users');
+      return [];
+    }
   };
 
+  // Fetch Places
+  const fetchPlaces = async () => {
+    try {
+      const response = await axios.get('/api/admin/places');
+      const data = response.data.data;
+      setPlaces(data || []);
+      return data;
+    } catch (error) {
+      console.error('Error fetching places:', error);
+      toast.error('Không thể tải danh sách places');
+      return [];
+    }
+  };
 
-  const places: Place[] = [
-    { 
-      id: 1,
-      name: 'Chú Dư đồ cổ',
-      categories: 'tourist_attraction',
-      description: 'Thông tin chưa có mô tả',
-      address: 'Xuân An, Tp. Phan Thiết',
-      location: { type: 'Point', coordinates: [108.104282, 10.947292] },
-      rating: 5.0,
-      userRatingsTotal: 5,
-      phone: undefined,
-      website: undefined,
-      imageThumbnail: 'https://lh3.googleusercontent.com/gps-cs-s/...',
-      open_hour: '08:00:00',
-      close_hour: '18:00:00',
-      createdAt: '2024-01-15T10:30:00Z'
-    },
-    { 
-      id: 2,
-      name: 'Bãi biển Mũi Né',
-      categories: 'beach,tourist_attraction',
-      description: 'Bãi biển đẹp nổi tiếng với cồn cát bay',
-      address: 'Mũi Né, Phan Thiết, Bình Thuận',
-      location: { type: 'Point', coordinates: [108.283333, 10.933333] },
-      rating: 4.8,
-      userRatingsTotal: 234,
-      phone: '0252123456',
-      website: 'https://muinebeach.com',
-      imageThumbnail: 'https://example.com/muine.jpg',
-      open_hour: '00:00:00',
-      close_hour: '23:59:00',
-      createdAt: '2024-02-10T09:00:00Z'
-    },
-  ];
+  // Initial load
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      await Promise.all([fetchUsers(), fetchPlaces()]);
+      setLoading(false);
+    };
+    loadData();
+  }, []);
 
-  // Handlers
+  // User handlers
   const handleAddUser = (): void => {
-    setSelectedItem(null);
-    setModalType('addUser');
-    setShowModal(true);
+    setSelectedUser(null);
+    setShowUserModal(true);
   };
 
   const handleEditUser = (user: User): void => {
-    setSelectedItem(user);
-    setModalType('editUser');
-    setShowModal(true);
+    setSelectedUser(user);
+    setShowUserModal(true);
   };
 
   const handleDeleteUser = async (userId: string): Promise<void> => {
     if (window.confirm('Bạn có chắc muốn xóa user này?')) {
-      console.log('Delete user:', userId);
       try {
-        const response = await axios.delete(`/api/admin/${userId}`);
-        console.log('User deleted:', response.data);
-
+        await axios.delete(`/api/admin/${userId}`);
+        toast.success('Xóa user thành công!');
         setUsers((prev) => prev.filter((user) => user.id !== userId));
-
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error deleting user:', error);
-        alert('Không thể xóa user. Vui lòng thử lại!');
+        toast.error(error.response?.data?.message || 'Không thể xóa user');
       }
     }
   };
 
+  // Place handlers
   const handleAddPlace = (): void => {
-    setSelectedItem(null);
-    setModalType('addPlace');
-    setShowModal(true);
+    setSelectedPlace(null);
+    setShowPlaceModal(true);
   };
 
   const handleEditPlace = (place: Place): void => {
-    setSelectedItem(place);
-    setModalType('editPlace');
-    setShowModal(true);
+    setSelectedPlace(place);
+    setShowPlaceModal(true);
   };
 
-  const handleDeletePlace = (placeId: number): void => {
-    if (window.confirm('Bạn có chắc muốn xóa place này?')) {
-      console.log('Delete place:', placeId);
-      // TODO: Call API to delete place
+  const handleDeletePlace = async (placeId: number): Promise<void> => {
+    if (window.confirm('Bạn có chắc muốn xóa địa điểm này?')) {
+      try {
+        await axios.delete(`/api/admin/place/${placeId}`);
+        toast.success('Xóa địa điểm thành công!');
+        // No need to update state here, PlaceManagement will refresh itself
+      } catch (error: any) {
+        console.error('Error deleting place:', error);
+        toast.error(error.response?.data?.message || 'Không thể xóa địa điểm');
+      }
     }
   };
 
+  // Handle place success (add/edit)
+  const handlePlaceSuccess = async () => {
+    // Trigger refresh in PlaceManagement component
+    await placeManagementRef.current?.refresh();
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-100">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Đang tải dữ liệu...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex h-screen bg-gray-100 pt-10">
+    <div className="flex h-screen bg-gray-100 pt-16">
       {/* Sidebar */}
-      <div className="w-64 bg-white shadow-lg">
+      <div className="w-64 bg-white shadow-lg fixed left-0 top-16 bottom-0 overflow-y-auto">
         <div className="p-6 border-b">
           <h1 className="text-2xl font-bold text-blue-600">Admin Panel</h1>
           <p className="text-sm text-gray-500 mt-1">WebGIS Du lịch</p>
         </div>
         
         <nav className="p-4">
-          <button
+          <NavButton
+            icon={<Home className="w-5 h-5 mr-3" />}
+            label="Dashboard"
+            active={activeTab === 'dashboard'}
             onClick={() => setActiveTab('dashboard')}
-            className={`flex items-center w-full p-3 mb-2 rounded-lg transition ${
-              activeTab === 'dashboard' ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-50'
-            }`}
-          >
-            <Home className="w-5 h-5 mr-3" />
-            Dashboard
-          </button>
+          />
           
-          <button
+          <NavButton
+            icon={<Users className="w-5 h-5 mr-3" />}
+            label="Quản lý User"
+            active={activeTab === 'users'}
             onClick={() => setActiveTab('users')}
-            className={`flex items-center w-full p-3 mb-2 rounded-lg transition ${
-              activeTab === 'users' ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-50'
-            }`}
-          >
-            <Users className="w-5 h-5 mr-3" />
-            Quản lý User
-          </button>
+          />
           
-          <button
+          <NavButton
+            icon={<MapPin className="w-5 h-5 mr-3" />}
+            label="Quản lý địa điểm"
+            active={activeTab === 'places'}
             onClick={() => setActiveTab('places')}
-            className={`flex items-center w-full p-3 mb-2 rounded-lg transition ${
-              activeTab === 'places' ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-50'
-            }`}
-          >
-            <MapPin className="w-5 h-5 mr-3" />
-            Quản lý Place
-          </button>
+          />
+
+          <NavButton
+            icon={<List className="w-5 h-5 mr-3" />}
+            label="Quản lý danh mục"
+            active={activeTab === 'categories'}
+            onClick={() => setActiveTab('categories')}
+          />
+          
+          <NavButton
+            icon={<MessageSquare className="w-5 h-5 mr-3" />}
+            label="Quản lý đánh giá"
+            active={activeTab === 'reviews'}
+            onClick={() => setActiveTab('reviews')}
+          />
+
+          <NavButton
+            icon={<VideoIcon className="w-5 h-5 mr-3" />}
+            label="Quản lý video"
+            active={activeTab === 'video'}
+            onClick={() => setActiveTab('video')}
+          />
         </nav>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 ml-64 overflow-auto">
         {/* Header */}
-        <div className="bg-white shadow-sm p-6 border-b">
+        <div className="bg-white shadow-sm p-6 border-b sticky top-0 z-10">
           <h2 className="text-2xl font-bold text-gray-800">
             {activeTab === 'dashboard' && 'Dashboard'}
             {activeTab === 'users' && 'Quản lý Users'}
-            {activeTab === 'places' && 'Quản lý Places'}
+            {activeTab === 'places' && 'Quản lý địa điểm'}
+            {activeTab === 'categories' && 'Quản lý danh mục'}
+            {activeTab === 'reviews' && 'Quản lý đánh giá'}
+            {activeTab === 'video' && 'Quản lý video'}
           </h2>
         </div>
 
-        {/* Content - Render tabs */}
+        {/* Content */}
         <div className="p-6">
-          {(activeTab === 'dashboard' && users.length > 0) && (
+          {activeTab === 'dashboard' && (
             <Dashboard stats={stats} users={users} places={places} />
           )}
 
@@ -191,28 +220,69 @@ const fetchUsers = async () => {
 
           {activeTab === 'places' && (
             <PlaceManagement
+              ref={placeManagementRef}
               places={places}
               onAddPlace={handleAddPlace}
               onEditPlace={handleEditPlace}
               onDeletePlace={handleDeletePlace}
             />
           )}
+          
+          {activeTab === 'categories' && <CategoryManagement />}
+          
+          {activeTab === 'reviews' && <ReviewManagement />}
+          
+          {activeTab === 'video' && <VideoManagement />}
         </div>
       </div>
 
-      {/* Modal */}
-      {showModal && (
-        <Modal 
-          type={modalType} 
-          item={selectedItem}
-          onClose={() => setShowModal(false)} 
+      {/* User Modal */}
+      {showUserModal && (
+        <UserModal 
+          user={selectedUser}
+          onClose={() => {
+            setShowUserModal(false);
+            setSelectedUser(null);
+          }} 
+          onSuccess={fetchUsers}
+        />
+      )}
+
+      {/* Place Modal */}
+      {showPlaceModal && (
+        <PlaceModal 
+          place={selectedPlace}
+          onClose={() => {
+            setShowPlaceModal(false);
+            setSelectedPlace(null);
+          }} 
+          onSuccess={handlePlaceSuccess}
         />
       )}
     </div>
   );
 };
 
-// Modal Component
+// Navigation Button Component
+interface NavButtonProps {
+  icon: React.ReactNode;
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}
 
+const NavButton: React.FC<NavButtonProps> = ({ icon, label, active, onClick }) => (
+  <button
+    onClick={onClick}
+    className={`flex items-center w-full p-3 mb-2 rounded-lg transition-all ${
+      active 
+        ? 'bg-blue-50 text-blue-600 font-medium shadow-sm' 
+        : 'hover:bg-gray-50 text-gray-700'
+    }`}
+  >
+    {icon}
+    {label}
+  </button>
+);
 
 export default AdminPage;

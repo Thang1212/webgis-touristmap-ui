@@ -60,11 +60,11 @@ export const Navbar: React.FC = () => {
       <div className="flex justify-between items-center">
 
         <Link
-          to="/"
+          to="/map"
           className="font-bold text-xl md:text-2xl text-white hover:text-amber-400 transition-colors flex items-center gap-2"
         >
           <MapPin className="text-amber-500" size={24} />
-          <span className="tracking-wider text-amber-400">tra__vel</span>
+          <span className="tracking-wider text-amber-400">Du lịch Phan Thiết</span>
         </Link>
 
         {/* Desktop Menu - Right Side (Auth) */}

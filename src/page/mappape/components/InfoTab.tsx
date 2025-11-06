@@ -1,7 +1,7 @@
 // components/InfoTab.tsx
 import React from "react";
 import { MapPin, Star, Phone, Globe, Clock, Tag, Calendar, Users } from "lucide-react";
-import type { Place } from "../../../store/mapstore";
+import type { Place, Category } from "../../../store/mapstore"; // ✅ Import Category
 
 interface InfoTabProps {
   place: Place;
@@ -15,22 +15,21 @@ const InfoTab: React.FC<InfoTabProps> = ({ place }) => {
   };
 
   const getOpeningHours = () => {
-    
     const open = formatTime(place.open_hour);
     const close = formatTime(place.close_hour);
     console.log(open, close);
     // Kiểm tra nếu mở cửa 24/7
-    if ((open === "00:00" && close === "23:59") || ( !place.open_hour || !place.close_hour)) {
+    if ((open === "00:00" && close === "23:59") || (!place.open_hour || !place.close_hour)) {
       return "Mở cửa 24/7";
     }
     
     return `${open} - ${close}`;
   };
 
-  // Lấy danh sách categories
-  const getCategoriesList = () => {
-    if (!place.categories) return [];
-    return place.categories.split(',').map(cat => cat.trim());
+  // ✅ FIXED: Lấy danh sách categories từ array
+  const getCategoriesList = (): Category[] => {
+    if (!place.categories || place.categories.length === 0) return [];
+    return place.categories;
   };
 
   // Format website URL
@@ -80,19 +79,20 @@ const InfoTab: React.FC<InfoTabProps> = ({ place }) => {
       )}
 
       {/* Categories/Tags */}
-      {place.categories && (
+      {place.categories && place.categories.length > 0 && (
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center gap-2 mb-3">
             <Tag className="w-5 h-5 text-gray-700" />
             <h3 className="font-bold text-lg text-gray-800">Danh mục</h3>
           </div>
           <div className="flex flex-wrap gap-2">
-            {getCategoriesList().map((category, index) => (
+            {/* ✅ FIXED: Map qua array of Category objects */}
+            {getCategoriesList().map((category) => (
               <span
-                key={index}
+                key={category.id}
                 className="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium border border-blue-200"
               >
-                {category}
+                {category.name}
               </span>
             ))}
           </div>
@@ -188,7 +188,12 @@ const InfoTab: React.FC<InfoTabProps> = ({ place }) => {
             <div className="mt-3">
               <div className="w-full bg-gray-200 rounded-full h-2.5">
                 <div 
-                  className={`bg-${getRatingColor(place.rating)}-500 h-2.5 rounded-full transition-all`}
+                  className={`h-2.5 rounded-full transition-all ${
+                    place.rating >= 4.5 ? 'bg-green-500' :
+                    place.rating >= 3.5 ? 'bg-blue-500' :
+                    place.rating >= 2.5 ? 'bg-yellow-500' :
+                    'bg-red-500'
+                  }`}
                   style={{ width: `${getRatingPercentage(place.rating)}%` }}
                 ></div>
               </div>
@@ -196,7 +201,7 @@ const InfoTab: React.FC<InfoTabProps> = ({ place }) => {
           </div>
 
           {/* Rating Breakdown (Simulated) */}
-          <div className="space-y-3">
+          {/* <div className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-sm text-gray-600 w-24">Vị trí</span>
               <div className="flex items-center gap-1 flex-1">
@@ -272,7 +277,7 @@ const InfoTab: React.FC<InfoTabProps> = ({ place }) => {
                 {Math.min((place.rating || 0) + 0.1, 5).toFixed(1)}
               </span>
             </div>
-          </div>
+          </div> */}
         </div>
       )}
 
@@ -324,12 +329,13 @@ const InfoTab: React.FC<InfoTabProps> = ({ place }) => {
             </span>
           </div>
           <div className="pt-2 border-t border-gray-300">
-            <a
-              href={`https://www.google.com/maps?q=${place.location.coordinates[1]},${place.location.coordinates[0]}`}
+            
+            <a  href={`https://www.google.com/maps?q=${place.location.coordinates[1]},${place.location.coordinates[0]}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-blue-600 hover:underline flex items-center gap-1"
             >
+
               <MapPin className="w-3 h-3" />
               Xem trên Google Maps
             </a>

@@ -73,7 +73,7 @@ const Dashboard: React.FC<DashboardProps> = ({ stats, users, places }) => {
       {/* Recent Data */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Places */}
-        <div className="bg-white p-6 rounded-lg shadow">
+        {/* <div className="bg-white p-6 rounded-lg shadow">
           <h3 className="text-lg font-semibold mb-4">Places mới nhất</h3>
           <div className="space-y-3">
             {places.slice(0, 5).map(place => (
@@ -88,7 +88,7 @@ const Dashboard: React.FC<DashboardProps> = ({ stats, users, places }) => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Recent Users */}
         {users.length > 0 && (

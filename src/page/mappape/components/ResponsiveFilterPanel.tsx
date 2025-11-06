@@ -1,6 +1,8 @@
 import React from "react";
 import { Filter, Star, X, Search, Tag, Satellite } from "lucide-react";
-import { useMapStore } from "../../../store/mapstore";
+import { useMapStore } from "../../../store/mapstore"; 
+import type { Category } from "../../../store/mapstore"; 
+
 import { useRoutingStore } from "@/store/routingstore";
 
 interface ResponsiveFilterPanelProps {
@@ -20,30 +22,27 @@ const ResponsiveFilterPanel: React.FC<ResponsiveFilterPanelProps> = ({
     resetFilters,
     setSelectedPlace,
   } = useMapStore();
-    const { useGPS, setUseGPS } = useRoutingStore();
+  const { useGPS, setUseGPS } = useRoutingStore();
 
   const categoryOptions = [
     { value: "", label: "Tất cả", emoji: "📍" },
-    { value: "tourist_attraction", label: "Điểm du lịch", emoji: "🎯" },
-    { value: "natural_feature", label: "Thiên nhiên", emoji: "🏞️" },
-    { value: "park", label: "Công viên", emoji: "🌳" },
-    { value: "beach", label: "Bãi biển", emoji: "🏖️" },
-    { value: "cultural", label: "Văn hóa", emoji: "🏛️" },
-    { value: "accommodation", label: "Lưu trú", emoji: "🏨" },
-    { value: "food", label: "Ẩm thực", emoji: "🍽️" },
-    { value: "cafe", label: "Café", emoji: "☕" },
-    { value: "shopping", label: "Mua sắm", emoji: "🛍️" },
-    { value: "entertainment", label: "Giải trí", emoji: "🎭" },
-    { value: "transportation", label: "Giao thông", emoji: "🚌" },
-    { value: "sports", label: "Thể thao", emoji: "⚽" },
-    { value: "services", label: "Dịch vụ", emoji: "🔧" },
-    { value: "health", label: "Sức khỏe", emoji: "💊" },
+    { value: "Du lịch", label: "Điểm du lịch", emoji: "🎯" },
+    { value: "Lưu trú", label: "Lưu trú", emoji: "🏨" },
+    { value: "Ăn uống", label: "Ẩm thực", emoji: "🍽️" },
+    { value: "Mua sắm", label: "Mua sắm", emoji: "🛍️" },
+    { value: "Giải trí", label: "Giải trí", emoji: "🎭" },
   ];
 
-  const getCategoryEmoji = (categories: string) => {
-    if (!categories) return "📍";
-    const primary = categories.split(",")[0].trim();
-    const option = categoryOptions.find((opt) => opt.value === primary);
+  const getCategoryEmoji = (categories: Category[]) => {
+    if (!categories || categories.length === 0) return "📍";
+    
+    // Lấy category đầu tiên
+    const primaryCategory = categories[0].name;
+    
+    const option = categoryOptions.find((opt) => 
+      opt.value.toLowerCase() === primaryCategory.toLowerCase()
+    );
+    
     return option?.emoji || "📍";
   };
 
@@ -58,7 +57,7 @@ const ResponsiveFilterPanel: React.FC<ResponsiveFilterPanelProps> = ({
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilters({ searchText: e.target.value });
   };
-    // ⭐ NEW: Toggle GPS
+
   const toggleGPS = () => {
     setUseGPS(!useGPS);
   };
@@ -86,7 +85,8 @@ const ResponsiveFilterPanel: React.FC<ResponsiveFilterPanelProps> = ({
           Khám phá Phan Thiết dễ dàng hơn 🌴
         </p>
       </div>
-           {/* ⭐ GPS Toggle Section */}
+
+      {/* GPS Toggle Section */}
       <div className="px-5 pt-4 pb-3 border-b border-gray-100 bg-gradient-to-b from-blue-50/50 to-transparent">
         <div className="flex items-center justify-between p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
           <div className="flex items-center gap-3">
@@ -223,7 +223,6 @@ const ResponsiveFilterPanel: React.FC<ResponsiveFilterPanelProps> = ({
                   key={place.id}
                   onClick={() => {
                     setSelectedPlace(place);
-                    // Close filter panel on mobile when selecting a place
                     if (window.innerWidth < 1024) {
                       onClose();
                     }
@@ -235,6 +234,7 @@ const ResponsiveFilterPanel: React.FC<ResponsiveFilterPanelProps> = ({
                   }`}
                 >
                   <div className="flex items-start gap-3">
+                    {/* ✅ FIXED: Pass array to function */}
                     <div className="text-2xl">
                       {getCategoryEmoji(place.categories)}
                     </div>
@@ -246,6 +246,19 @@ const ResponsiveFilterPanel: React.FC<ResponsiveFilterPanelProps> = ({
                         <p className="text-xs text-gray-500 truncate">
                           {place.address}
                         </p>
+                      )}
+                      {/* ✅ NEW: Display all categories as badges */}
+                      {place.categories.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {place.categories.map((cat) => (
+                            <span
+                              key={cat.id}
+                              className="text-xs px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full"
+                            >
+                              {cat.name}
+                            </span>
+                          ))}
+                        </div>
                       )}
                       {place.rating && (
                         <div className="flex items-center gap-1 mt-1">

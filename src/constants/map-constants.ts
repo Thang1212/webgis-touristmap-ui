@@ -28,10 +28,19 @@ export const INITIAL_LAYERS: LayerConfig[] = [
     color: "#3b82f6",
     description: "Chỉ đường từ điểm A đến B",
   },
+  {
+    id: "satelite",
+    name: "Vệ tinh",
+    visible: true,
+    opacity: 1,
+    icon: "🛰️",
+    color: "#3b82f6",
+    description: "Bản đồ vệ tinh",
+  }
 ];
 
 export const MAP_CONFIG = {
-  center: [10.9288, 108.0999] as [number, number],
+  center: [10.930318, 108.099757] as [number, number],
   zoom: 13,
   fitBoundsPadding: [50, 50] as [number, number],
   tileSize: 512,
@@ -42,7 +51,7 @@ export const MAP_CONFIG = {
 export const GEOSERVER_CONFIG = {
   baseUrl: import.meta.env.VITE_GEOSERVER_BASE_URL || "http://localhost:8080/geoserver/Webgis_project/wms",
   workspace: "Webgis_project",
-  placesLayer: "Webgis_project:place",
+  placesLayer: "Webgis_project:place_view",
   roadsLayer: "Webgis_project:edges",
   wmsVersion: "1.1.1",
   format: "image/png",

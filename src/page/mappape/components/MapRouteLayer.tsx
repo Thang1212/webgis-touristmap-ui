@@ -11,7 +11,6 @@ const MapRouteLayer = () => {
   const markersRef = useRef<L.Marker[]>([])
 
   useEffect(() => {
-    // Xóa route và markers cũ
     if (routeLayerRef.current) {
       map.removeLayer(routeLayerRef.current)
       routeLayerRef.current = null

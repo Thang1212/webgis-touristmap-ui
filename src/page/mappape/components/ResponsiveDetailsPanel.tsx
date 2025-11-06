@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { X, Star, Phone, Globe, Navigation, Info, MessageSquare, Clock, MapPin } from "lucide-react";
-import { useMapStore } from "../../../store/mapstore";
+import { X, Star, Phone, Globe, Navigation, Info, MessageSquare, Clock, MapPin, Video } from "lucide-react";
+import { useMapStore,  } from "../../../store/mapstore";
+import type {Category } from "../../../store/mapstore";
 import InfoTab from "../components/InfoTab";
 import ReviewsTab from "../components/Reviews";
 import RoutingTab from "./RoutingTab";
+import VideoTab from "./VideoTab";
 
 interface ResponsiveDetailsPanelProps {
   isOpen: boolean;
@@ -15,17 +17,17 @@ const ResponsiveDetailsPanel: React.FC<ResponsiveDetailsPanelProps> = ({
   onClose,
 }) => {
   const { selectedPlace, setSelectedPlace } = useMapStore();
-  const [activeTab, setActiveTab] = useState<'info' | 'reviews' | 'routing'>('info');
+  const [activeTab, setActiveTab] = useState<'info' | 'reviews' | 'routing' | 'video'>('info');
   
   if (!selectedPlace) return null;
 
-  // Get primary category
-  const getPrimaryCategory = (categories: string) => {
-    return categories.split(',')[0].trim();
+  // ✅ FIXED: Get primary category from array
+  const getPrimaryCategory = (categories: Category[]): string => {
+    if (!categories || categories.length === 0) return "";
+    return categories[0].name;
   };
 
-  const getCategoryLabel = (categories: string) => {
-    const primary = getPrimaryCategory(categories);
+  const getCategoryLabel = (categoryName: string): string => {
     const labels: Record<string, string> = {
       hotel: "Khách sạn",
       resort: "Resort",
@@ -40,12 +42,16 @@ const ResponsiveDetailsPanel: React.FC<ResponsiveDetailsPanelProps> = ({
       luxury: "Cao cấp",
       spa: "Spa",
       vietnamese_restaurant: "Nhà hàng Việt",
+      "Du lịch": "Điểm du lịch",
+      "Lưu trú": "Lưu trú",
+      "Ăn uống": "Ẩm thực",
+      "Mua sắm": "Mua sắm",
+      "Giải trí": "Giải trí",
     };
-    return labels[primary] || primary;
+    return labels[categoryName] || categoryName;
   };
 
-  const getCategoryColor = (categories: string) => {
-    const primary = getPrimaryCategory(categories);
+  const getCategoryColor = (categoryName: string): string => {
     const colors: Record<string, string> = {
       hotel: "bg-blue-100 text-blue-700",
       resort: "bg-purple-100 text-purple-700",
@@ -60,8 +66,13 @@ const ResponsiveDetailsPanel: React.FC<ResponsiveDetailsPanelProps> = ({
       luxury: "bg-yellow-100 text-yellow-700",
       spa: "bg-pink-100 text-pink-700",
       vietnamese_restaurant: "bg-red-100 text-red-700",
+      "Du lịch": "bg-amber-100 text-amber-700",
+      "Lưu trú": "bg-blue-100 text-blue-700",
+      "Ăn uống": "bg-green-100 text-green-700",
+      "Mua sắm": "bg-pink-100 text-pink-700",
+      "Giải trí": "bg-purple-100 text-purple-700",
     };
-    return colors[primary] || "bg-gray-100 text-gray-700";
+    return colors[categoryName] || "bg-gray-100 text-gray-700";
   };
 
   const formatTime = (time?: string) => {
@@ -70,7 +81,7 @@ const ResponsiveDetailsPanel: React.FC<ResponsiveDetailsPanelProps> = ({
   };
 
   const getOpeningHours = () => {
-    if (!selectedPlace.close_hour || !selectedPlace.close_hour) return null;
+    if (!selectedPlace.open_hour || !selectedPlace.close_hour) return null;
     
     const open = formatTime(selectedPlace.open_hour);
     const close = formatTime(selectedPlace.close_hour);
@@ -111,6 +122,11 @@ const ResponsiveDetailsPanel: React.FC<ResponsiveDetailsPanelProps> = ({
     onClose();
   };
 
+  // ✅ Get primary category info
+  const primaryCategoryName = getPrimaryCategory(selectedPlace.categories);
+  const categoryLabel = getCategoryLabel(primaryCategoryName);
+  const categoryColor = getCategoryColor(primaryCategoryName);
+
   return (
     <div className="h-full bg-white shadow-2xl lg:shadow-xl border-l border-gray-200 flex flex-col overflow-hidden pt-10">
       {/* Header with Image */}
@@ -132,9 +148,17 @@ const ResponsiveDetailsPanel: React.FC<ResponsiveDetailsPanelProps> = ({
 
         {/* Basic Info */}
         <div className="absolute bottom-4 left-4 right-4">
-          <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 ${getCategoryColor(selectedPlace.categories)}`}>
-            {getCategoryLabel(selectedPlace.categories)}
-          </span>
+          <div className="flex flex-wrap gap-2 mb-2">
+            {selectedPlace.categories.map((category) => (
+              <span
+                key={category.id}
+                className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getCategoryColor(category.name)}`}
+              >
+                {getCategoryLabel(category.name)}
+              </span>
+            ))}
+          </div>
+          
           <h2 className="text-2xl font-bold text-white mb-1">{selectedPlace.name}</h2>
           <div className="flex items-center gap-4 text-white/90">
             {selectedPlace.rating && (
@@ -151,7 +175,7 @@ const ResponsiveDetailsPanel: React.FC<ResponsiveDetailsPanelProps> = ({
       </div>
 
       {/* Quick Info Bar */}
-      <div className="px-6 py-4 bg-gray-50 border-b border-gray-200 space-y-2 flex-shrink-0">
+      {/* <div className="px-6 py-4 bg-gray-50 border-b border-gray-200 space-y-2 flex-shrink-0">
         {selectedPlace.address && (
           <div className="flex items-start gap-2 text-sm text-gray-700">
             <MapPin className="w-4 h-4 mt-0.5 text-gray-500 flex-shrink-0" />
@@ -164,7 +188,7 @@ const ResponsiveDetailsPanel: React.FC<ResponsiveDetailsPanelProps> = ({
             <span>{getOpeningHours()}</span>
           </div>
         )}
-      </div>
+      </div> */}
 
       {/* Tabs */}
       <div className="flex border-b border-gray-200 bg-white flex-shrink-0">
@@ -190,7 +214,7 @@ const ResponsiveDetailsPanel: React.FC<ResponsiveDetailsPanelProps> = ({
           <MessageSquare className="w-4 h-4" />
           Đánh giá
         </button>
-          <button
+        <button
           onClick={() => setActiveTab('routing')}
           className={`flex-1 flex items-center justify-center gap-2 py-4 font-semibold transition-all ${
             activeTab === 'routing'
@@ -201,27 +225,34 @@ const ResponsiveDetailsPanel: React.FC<ResponsiveDetailsPanelProps> = ({
           <Navigation className="w-4 h-4" />
           Chỉ đường
         </button>
+                <button
+          onClick={() => setActiveTab('video')}
+          className={`flex-1 flex items-center justify-center gap-2 py-4 font-semibold transition-all ${
+            activeTab === 'video'
+              ? 'text-blue-600 border-b-2 border-blue-600'
+              : 'text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          <Video className="w-4 h-4" />
+          Video
+        </button>
       </div>
 
       {/* Tab Content */}
       <div className="flex-1 overflow-y-auto">
-            {activeTab === 'info' ? (
-              <InfoTab place={selectedPlace} />
-            ) : activeTab === 'reviews' ? (
-              <ReviewsTab place={selectedPlace} />
-            ) : (
-              <RoutingTab />
-            )}
-          </div>
+        {activeTab === 'info' ? (
+          <InfoTab place={selectedPlace} />
+        ) : activeTab === 'reviews' ? (
+          <ReviewsTab place={selectedPlace} />
+        ) : activeTab === 'video' ? (
+          <VideoTab place={selectedPlace} />
+        ): (
+          <RoutingTab />
+        )}
+      </div>
+
       {/* Footer with Action Buttons */}
       <div className="p-6 border-t border-gray-200 bg-gray-50 space-y-3 flex-shrink-0">
-        {/* <button 
-          onClick={handleGetDirections}
-          className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-all shadow-md"
-        >
-          <Navigation className="w-5 h-5" />
-          Chỉ đường
-        </button> */}
         <div className="grid grid-cols-2 gap-3">
           <button 
             onClick={handleCallPhone}
