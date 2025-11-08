@@ -6,7 +6,7 @@ import type { InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 
 // ==================== AXIOS INSTANCES ====================
 const api = axios.create({
-  baseURL: '/api/',
+  baseURL: import.meta.env.VITE_BACKEND_BASE_URL || '/api/',
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
@@ -142,4 +142,5 @@ api.interceptors.response.use(
 );
 
 export default api;
+
 export { refreshApi }; // Export for testing if needed
