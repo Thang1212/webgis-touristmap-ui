@@ -1,7 +1,3 @@
-
-import 'dotenv/config';
-
-
 import axios, { AxiosError } from 'axios';
 import type { InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 

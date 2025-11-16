@@ -160,7 +160,8 @@ fetchFilteredPlacesFromGeoServer: async () => {
     if (filters.searchText) params.append('searchText', filters.searchText);
 
     // const url = `http://localhost:8000/api/places?${params.toString()}`;
-    const url = `${import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api"}/places?${params.toString()}`;
+    // const url = `${import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api"}/places?${params.toString()}`;
+    const url = `${import.meta.env.VITE_API_BASE_URL}/places?${params.toString()}`;
     console.log("🔍 Fetching from API:", url);
 
     const response = await fetch(url);
