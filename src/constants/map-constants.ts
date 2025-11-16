@@ -49,7 +49,7 @@ export const MAP_CONFIG = {
 };
 
 export const GEOSERVER_CONFIG = {
-  baseUrl: import.meta.env.VITE_GEOSERVER_BASE_URL || "http://localhost:8080/geoserver/Webgis_project/wms",
+  baseUrl: "http://localhost:8080/geoserver/Webgis_project/wms",
   workspace: "Webgis_project",
   placesLayer: "Webgis_project:place_view",
   roadsLayer: "Webgis_project:edges",

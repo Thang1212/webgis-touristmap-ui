@@ -49,11 +49,6 @@ export const authApi = {
   //?
   googleLogin: (): void => {
     const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
-
-    // const apiUrl = 
-    //   import.meta.env.MODE === "production"
-    //     ? import.meta.env.VITE_GEOSERVER_BASE_URL_PROD
-    //     : import.meta.env.VITE_GEOSERVER_BASE_URL_DEV;
     window.location.href = `${apiUrl}/auth/google`;
   },
 };

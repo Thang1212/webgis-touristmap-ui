@@ -1,4 +1,5 @@
 
+import 'dotenv/config';
 
 
 import axios, { AxiosError } from 'axios';
@@ -142,9 +143,4 @@ api.interceptors.response.use(
 );
 
 export default api;
-
 export { refreshApi }; // Export for testing if needed
-
-
-
-
