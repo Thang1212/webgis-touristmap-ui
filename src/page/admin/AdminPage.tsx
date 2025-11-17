@@ -35,7 +35,7 @@ const AdminPage: React.FC = () => {
   // Fetch Users
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('/api/admin');
+      const response = await axios.get('/admin');
       const data = response.data.data.users;
       setUsers(data || []);
       return data;
@@ -49,7 +49,7 @@ const AdminPage: React.FC = () => {
   // Fetch Places
   const fetchPlaces = async () => {
     try {
-      const response = await axios.get('/api/admin/places');
+      const response = await axios.get('/admin/places');
       const data = response.data.data;
       setPlaces(data || []);
       return data;
