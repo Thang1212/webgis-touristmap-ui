@@ -74,7 +74,7 @@ const InfoTab: React.FC<InfoTabProps> = ({ place }) => {
       {place.description && (
         <div className="p-6 border-b border-gray-200">
           <h3 className="font-bold text-lg text-gray-800 mb-3">Giới thiệu</h3>
-          <p className="text-gray-700 leading-relaxed">{place.description}</p>
+          <p className="text-gray-700 leading-relaxed text-sm whitespace-pre-wrap">{place.description}</p>
         </div>
       )}
 

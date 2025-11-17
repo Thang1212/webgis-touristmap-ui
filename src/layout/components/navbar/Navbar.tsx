@@ -84,7 +84,7 @@ export const Navbar: React.FC = () => {
               <div className="relative">
                 <button
                   onClick={toggleUserMenu}
-                  className="flex items-center gap-2 text-white hover:text-amber-400 transition-colors"
+                  className="flex items-center gap-2 text-amber-400 transition-colors"
                 >
                   <User size={20} />
                   <span className="font-medium text-amber-400">{user?.name || user?.email?.split('@')[0]}</span>
@@ -140,7 +140,7 @@ export const Navbar: React.FC = () => {
         {/* Mobile Menu Button */}
         <button
           onClick={toggleMobileMenu}
-          className="md:hidden text-white z-50 hover:text-amber-400 transition-colors"
+          className="md:hidden text-amber-400 z-50 hover:text-amber-400 transition-colors"
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -152,7 +152,7 @@ export const Navbar: React.FC = () => {
           className="md:hidden absolute top-full left-0 w-full bg-black/95 backdrop-blur-xl px-6 py-6 space-y-4 border-t border-amber-500/20"
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Navigation Links */}
+          {/* Navigation Links
           <Link
             to="/"
             onClick={() => setIsOpen(false)}
@@ -176,10 +176,10 @@ export const Navbar: React.FC = () => {
           </Link>
 
           {/* Search */}
-          <button className="w-full flex items-center gap-2 text-white hover:text-amber-400 transition-colors py-2">
+          {/* <button className="w-full flex items-center gap-2 text-white hover:text-amber-400 transition-colors py-2">
             <Search size={20} />
             <span>Search</span>
-          </button>
+          </button> */} 
 
           {/* Divider */}
           <div className="border-t border-amber-500/20 pt-4">

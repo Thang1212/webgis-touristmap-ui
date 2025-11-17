@@ -1,9 +1,11 @@
-// User type
+//Auth.type.ts
+// User type 
 export interface User {
   id: string;
   email: string;
   name?: string;
   role: 'user' | 'admin';
+  // avatar: string
   authProvider: 'local' | 'google';
   createdAt?: string;
 }

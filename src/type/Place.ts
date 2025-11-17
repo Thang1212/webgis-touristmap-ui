@@ -1,6 +1,5 @@
 export type Place = {
   id: number;
-  // place_id: string;                 // ✅ NEW: Google Place ID (unique)
   name: string;
   categories: string;              // ✅ CHANGED: Thay type, format: "hotel,luxury,spa"
   description?: string;            // ✅ Optional

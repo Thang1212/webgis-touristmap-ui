@@ -172,12 +172,12 @@ const PlaceManagement = forwardRef<PlaceManagementRef, PlaceManagementProps>(
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Place</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Categories</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Address</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Location</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Rating</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Địa điểm</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Danh mục</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Địa chỉ</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tọa độ</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Đánh giá</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Liên hệ</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
                   </tr>
                 </thead>
@@ -190,7 +190,7 @@ const PlaceManagement = forwardRef<PlaceManagementRef, PlaceManagementProps>(
                       <td className="px-6 py-4">
                         <div className="flex items-start gap-3">
                           {place.imageThumbnail ? (
-                            <img 
+                            <img referrerPolicy="no-referrer"
                               src={place.imageThumbnail} 
                               alt={place.name}
                               className="w-12 h-12 rounded object-cover flex-shrink-0"

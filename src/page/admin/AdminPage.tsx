@@ -8,7 +8,7 @@ import type { PlaceManagementRef } from './components/PlaceManagement';
 import CategoryManagement from './components/CategoryManagement';
 import ReviewManagement from './components/ReviewManagement';
 import VideoManagement from './components/VideoManagement';
- import { UserModal } from './components/Usermodal';
+import { UserModal } from './components/Usermodal';
 import { PlaceModal } from './components/Placemodal';
 import type { User, Place, Stats, TabType, ModalType } from '../../type/admin.types';
 import axios from 'axios';
@@ -17,7 +17,7 @@ import toast from 'react-hot-toast';
 const AdminPage: React.FC = () => {
   const placeManagementRef = useRef<PlaceManagementRef>(null);
   
-  const [activeTab, setActiveTab] = useState<TabType>('dashboard');
+  const [activeTab, setActiveTab] = useState<TabType>('users');
   const [showUserModal, setShowUserModal] = useState<boolean>(false);
   const [showPlaceModal, setShowPlaceModal] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -141,16 +141,16 @@ const AdminPage: React.FC = () => {
       <div className="w-64 bg-white shadow-lg fixed left-0 top-16 bottom-0 overflow-y-auto">
         <div className="p-6 border-b">
           <h1 className="text-2xl font-bold text-blue-600">Admin Panel</h1>
-          <p className="text-sm text-gray-500 mt-1">WebGIS Du lịch</p>
+          {/* <p className="text-sm text-gray-500 mt-1">WebGIS Du lịch</p> */}
         </div>
         
         <nav className="p-4">
-          <NavButton
+          {/* <NavButton
             icon={<Home className="w-5 h-5 mr-3" />}
             label="Dashboard"
             active={activeTab === 'dashboard'}
             onClick={() => setActiveTab('dashboard')}
-          />
+          /> */}
           
           <NavButton
             icon={<Users className="w-5 h-5 mr-3" />}
@@ -194,7 +194,7 @@ const AdminPage: React.FC = () => {
         {/* Header */}
         <div className="bg-white shadow-sm p-6 border-b sticky top-0 z-10">
           <h2 className="text-2xl font-bold text-gray-800">
-            {activeTab === 'dashboard' && 'Dashboard'}
+            {/* {activeTab === 'dashboard' && 'Dashboard'} */}
             {activeTab === 'users' && 'Quản lý Users'}
             {activeTab === 'places' && 'Quản lý địa điểm'}
             {activeTab === 'categories' && 'Quản lý danh mục'}
@@ -205,9 +205,9 @@ const AdminPage: React.FC = () => {
 
         {/* Content */}
         <div className="p-6">
-          {activeTab === 'dashboard' && (
+          {/* {activeTab === 'dashboard' && (
             <Dashboard stats={stats} users={users} places={places} />
-          )}
+          )} */}
 
           {activeTab === 'users' && (
             <UserManagement

@@ -9,6 +9,7 @@ import {RegisterForm} from './page/auth_page/RegisterForm'
 import { useAuth } from './hooks/useAuth'
 import { useEffect } from 'react'
 import AdminPage from './page/admin/AdminPage'
+import ProfilePage from './page/ProfilePage/ProfilePage'
 
 function App() {
   const {isAuthenticated, isAdmin} = useAuth();
@@ -25,6 +26,7 @@ function App() {
               isAuthenticated && isAdmin ? <AdminPage /> : <Mappage />
             }
           />
+          <Route path="profile" element={<ProfilePage/>} />
         </Route>
           <Route path="/login" element={ isAuthenticated ? <Mappage /> : <LoginForm />} />
           <Route path="/register" element={isAuthenticated ? <Mappage /> : <RegisterForm />} />

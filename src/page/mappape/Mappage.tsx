@@ -30,6 +30,8 @@ import { MAP_CONFIG } from "../../constants/map-constants";
 import { buildCqlFilter } from "../../utils/cql-filter";
 import MapRouteLayer from "./components/MapRouteLayer";
 import SatelliteLayer from "./components/SatelliteLayer";
+import ChatBot from "./components/ChatBot";
+import RoadsLayer from "./components/RoadsLayer";
 
 const MapView: React.FC = () => {
   // Store state
@@ -39,7 +41,7 @@ const MapView: React.FC = () => {
     selectedPlace,
     setSelectedPlace,
     loading,
-    fetchFilteredPlacesFromGeoServer,
+    fetchFilteredPlaces,
   } = useMapStore();
   const { useGPS } = useRoutingStore();
 
@@ -53,7 +55,7 @@ const MapView: React.FC = () => {
   const { mapInstance, setMapInstance, setMarkerRef } = useMapInitialization(
     filteredPlaces,
     selectedPlace,
-    fetchFilteredPlacesFromGeoServer
+    fetchFilteredPlaces
   );
  const sortedPlaces = useMemo(() => {
     return [...filteredPlaces].sort((a, b) => {
@@ -69,6 +71,7 @@ const MapView: React.FC = () => {
   const roadsLayer = getLayerConfig("roads");
   const routeLayer = getLayerConfig("route");
   const sateliteLayer = getLayerConfig("satelite")
+  const administrativeLayer = getLayerConfig("administrative")
   // Build CQL filter
   const cqlFilter = buildCqlFilter(filters);
 
@@ -92,7 +95,7 @@ const MapView: React.FC = () => {
       {/* Map Container */}
       <div className="flex-1 relative min-h-0">
         <LoadingOverlay isLoading={loading} />
-        {/* <ResultCounter count={filteredPlaces.length} /> */}
+        
         <LayerControl
           layers={layers}
           onLayerToggle={handleLayerToggle}
@@ -122,12 +125,18 @@ const MapView: React.FC = () => {
           />
 
           {/* WMS Layers */}
-          <WMSLayers
+          {/* <WMSLayers
             placesLayer={placesLayer}
             roadsLayer={roadsLayer}
+            administrativeLayer={administrativeLayer}
             cqlFilter={cqlFilter}
+          /> */}
+           {roadsLayer && (
+          <RoadsLayer
+            visible={roadsLayer.visible}
+            opacity={roadsLayer.opacity || 0.8}
           />
-
+        )}
           {/* GPS Location Marker */}
           {useGPS && <LocationMarker showMarker={true} />}
 
@@ -146,6 +155,7 @@ const MapView: React.FC = () => {
             visible={placesLayer?.visible ?? true}
           />
         </MapContainer>
+        <ChatBot/>
       </div>
     </div>
   );

@@ -186,15 +186,7 @@ const VideoManagement: React.FC<VideoManagementProps> = ({
               <option value="TikTok">TikTok</option>
               <option value="Instagram">Instagram</option>
             </select>
-            <select 
-              className="px-4 py-2 border rounded-lg"
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-            >
-              <option value="">Tất cả Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
+       
           </div>
         </div>
 
@@ -212,11 +204,10 @@ const VideoManagement: React.FC<VideoManagementProps> = ({
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Video</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Platform</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Place</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nền tảng</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Địa điểm</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Channel</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Views</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
                 </tr>
               </thead>
@@ -233,7 +224,7 @@ const VideoManagement: React.FC<VideoManagementProps> = ({
                       <td className="px-6 py-4">
                         <div className="flex items-start gap-3">
                           {video.thumbnail && (
-                            <img 
+                            <img  referrerPolicy="no-referrer"
                               src={video.thumbnail} 
                               alt={video.title}
                               className="w-24 h-16 rounded object-cover"
@@ -276,18 +267,7 @@ const VideoManagement: React.FC<VideoManagementProps> = ({
                           <span>{video.views.toLocaleString()}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <button
-                          onClick={() => onToggleStatus && onToggleStatus(video.id)}
-                          className={`px-3 py-1 text-xs font-medium rounded-full ${
-                            video.status === 'active'
-                              ? 'bg-green-100 text-green-700'
-                              : 'bg-gray-100 text-gray-700'
-                          }`}
-                        >
-                          {video.status}
-                        </button>
-                      </td>
+                      
                       <td className="px-6 py-4 whitespace-nowrap text-sm">
                         <button 
                           onClick={() => handleDeleteVideo(video.id)}

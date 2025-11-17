@@ -7,7 +7,7 @@ export const useLayerManagement = () => {
     const [layers, setLayers] = useState(() =>
       INITIAL_LAYERS.map((layer, index) => ({
         ...layer,
-        visible: index === 0, // chỉ bật layer đầu tiên
+        visible: index === 0 || index === 1, // chỉ bật layer đầu tiên
       }))
     );
   const handleLayerToggle = useCallback((layerId: string) => {

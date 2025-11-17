@@ -11,7 +11,7 @@ interface PlaceMarkerProps {
   onSelect: (place: Place) => void;
   markerRef?: (ref: L.Marker | null) => void;
   zIndexOffset?: number;
-  isPriority?: boolean; // ⭐ THÊM PROP
+  isPriority?: boolean; 
 }
 
 const PlaceMarker: React.FC<PlaceMarkerProps> = ({
@@ -40,13 +40,13 @@ const PlaceMarker: React.FC<PlaceMarkerProps> = ({
       return L.divIcon({
         className: "selected-marker",
         html: `
-          <div style="position: relative; animation: bounce 0.5s;">
+          <div style="position: relative; animation: bounce 2s;">
             <div style="
               position: absolute;
               bottom: -5px; left: 50%;
               transform: translateX(-50%);
-              width: 40px; height: 40px;
-              background: rgba(59,130,246,0.3);
+              width: 60px; height: 60px;
+              background: rgba(59,130,246,0.6);
               border-radius: 50%;
               animation: pulse-blue 2s infinite;">
             </div>
@@ -160,6 +160,8 @@ const PlaceMarker: React.FC<PlaceMarkerProps> = ({
       icon={getMarkerIcon()}
       ref={markerRef}
       zIndexOffset={zIndexOffset}
+      
+      {...({ place } as any)} // Hack để pass custom data
       eventHandlers={{
         //click: () => onSelect(place),
       }}
@@ -174,7 +176,7 @@ const PlaceMarker: React.FC<PlaceMarkerProps> = ({
           )}
           
           {place.imageThumbnail && (
-            <img
+            <img  referrerPolicy="no-referrer"
               src={place.imageThumbnail}
               alt={place.name}
               className="w-full h-32 object-cover rounded-lg mb-3"
@@ -223,7 +225,11 @@ const PlaceMarker: React.FC<PlaceMarkerProps> = ({
                 <span className="text-xs text-gray-500">
                   ({place.userRatingsTotal.toLocaleString()} đánh giá)
                 </span>
+                
               )}
+              <span className="text-[10px] text-gray-400 pt-[2px]">
+                từ google
+              </span>
             </div>
           )}
 

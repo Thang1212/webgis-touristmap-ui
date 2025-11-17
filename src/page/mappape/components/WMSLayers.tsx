@@ -6,12 +6,14 @@ import type { LayerConfig } from "./LayerControl";
 interface WMSLayersProps {
   placesLayer: LayerConfig | undefined;
   roadsLayer: LayerConfig | undefined;
+  administrativeLayer: LayerConfig | undefined;
   cqlFilter: string;
 }
 
 export const WMSLayers: React.FC<WMSLayersProps> = ({
   placesLayer,
   roadsLayer,
+  administrativeLayer,
   cqlFilter,
   
 }) => {
@@ -41,6 +43,18 @@ export const WMSLayers: React.FC<WMSLayersProps> = ({
             version: GEOSERVER_CONFIG.wmsVersion,
           } as any}
           opacity={roadsLayer.opacity || 1}
+        />
+      )}
+      {administrativeLayer?.visible && ( //opactity không hoạc động
+        <WMSTileLayer 
+          url={GEOSERVER_CONFIG.baseUrl}
+          params={{
+            layers: GEOSERVER_CONFIG.administrativeLayer,
+            format: GEOSERVER_CONFIG.format,
+            transparent: true,
+            version: GEOSERVER_CONFIG.wmsVersion,
+          } as any}
+          opacity={administrativeLayer.opacity || 1}
         />
       )}
     </>

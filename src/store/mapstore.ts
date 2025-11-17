@@ -51,6 +51,11 @@ interface MapStore {
   loading: boolean;
   error: string | null;
 
+  detailsPanelMode: 'panel' | 'window';
+  isDetailsPanelMinimized: boolean;
+  setDetailsPanelMode: (mode: 'panel' | 'window') => void;
+  setIsDetailsPanelMinimized: (minimized: boolean) => void;
+
   setPlaces: (places: Place[]) => void;
   setFilters: (filters: Partial<Filters>) => void;
   resetFilters: () => void;
@@ -58,14 +63,14 @@ interface MapStore {
   filterPlaces: () => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
-  fetchFilteredPlacesFromGeoServer: () => Promise<void>;
+  fetchFilteredPlaces: () => Promise<void>;
 }
 
 // 🧠 Store
 export const useMapStore = create<MapStore>((set, get) => {
   // ⚡ debounce wrapper cho API fetch
   const debouncedFetch = debounce(async () => {
-    await get().fetchFilteredPlacesFromGeoServer();
+    await get().fetchFilteredPlaces();
   }, 500);
 
   return {
@@ -147,7 +152,7 @@ export const useMapStore = create<MapStore>((set, get) => {
     setLoading: (loading) => set({ loading }),
 
     setError: (error) => set({ error }),
-fetchFilteredPlacesFromGeoServer: async () => {
+fetchFilteredPlaces: async () => {
   const { filters } = get();
   set({ loading: true, error: null });
 
@@ -160,8 +165,7 @@ fetchFilteredPlacesFromGeoServer: async () => {
     if (filters.searchText) params.append('searchText', filters.searchText);
 
     // const url = `http://localhost:8000/api/places?${params.toString()}`;
-    // const url = `${import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api"}/places?${params.toString()}`;
-    const url = `${import.meta.env.VITE_API_BASE_URL}/places?${params.toString()}`;
+    const url = `${import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api"}/places?${params.toString()}`;
     console.log("🔍 Fetching from API:", url);
 
     const response = await fetch(url);
@@ -210,67 +214,11 @@ fetchFilteredPlacesFromGeoServer: async () => {
     });
   }
 },
-    // fetchFilteredPlacesFromGeoServer: async () => {
-    //   const { filters } = get();
-    //   set({ loading: true, error: null });
-
-    //   try {
-    //     const params = new URLSearchParams();
-
-    //     if (filters.categories) params.append('categories', filters.categories);
-    //     if (filters.district) params.append('district', filters.district);
-    //     if (filters.rating) params.append('rating', filters.rating);
-    //     if (filters.searchText) params.append('searchText', filters.searchText);
-    //     //const url = `http://localhost:8080/geoserver/Places/ows?service=WFS&version=1.0.0&request=GetFeature&typename=Places:places&outputFormat=application/json`;
-    //     const url = `http://localhost:8000/api/places?${params.toString()}`;
-    //     console.log("🔍 Fetching from API:", url);
-
-    //     const response = await fetch(url);
-    //     if (!response.ok) {
-    //       const errorText = await response.text();
-    //       throw new Error(`HTTP error! status: ${response.status}\n${errorText}`);
-    //     }
-
-    //     const result = await response.json();
-
-    //     if (result.data && result.data.length > 0) {
-    //       const places: Place[] = result.data.map((item: any) => ({
-    //         id: item.id,
-    //        // place_id: item.place_id || item.placeId,
-    //         name: item.name,
-    //         categories: item.categories || '',
-    //         description: item.description || undefined,
-    //         address: item.address || undefined,
-    //         location: item.location,
-    //         rating: item.rating ? parseFloat(item.rating) : undefined,
-    //         userRatingsTotal:
-    //           item.userRatingsTotal || item.user_ratings_total
-    //             ? parseInt(item.userRatingsTotal || item.user_ratings_total)
-    //             : undefined,
-    //         phone: item.phone || undefined,
-    //         website: item.website || undefined,
-    //         imageThumbnail: item.imageThumbnail || item.image_thumbnail || undefined,
-    //         open_hour:item.open_hour || undefined,
-    //         close_hour: item.close_hour || undefined,
-    //         createdAt: item.createdAt || item.created_at || undefined,
-    //         updatedAt: item.updatedAt || item.updated_at || undefined,
-    //       }));
-
-    //       console.log("✅ Fetched places from API:", places.length);
-    //       console.log(places[0]);
-    //       set({ filteredPlaces: places, loading: false });
-    //     } else {
-    //       console.log("❌ No places found");
-    //       set({ filteredPlaces: [], loading: false });
-    //     }
-    //   } catch (error) {
-    //     console.error("❌ Error fetching places:", error);
-    //     set({
-    //       error: error instanceof Error ? error.message : 'Unknown error',
-    //       filteredPlaces: [],
-    //       loading: false,
-    //     });
-    //   }
-    // },
+detailsPanelMode: 'panel',
+  isDetailsPanelMinimized: false,
+  
+  setDetailsPanelMode: (mode) => set({ detailsPanelMode: mode }),
+  setIsDetailsPanelMinimized: (minimized) => set({ isDetailsPanelMinimized: minimized })
+  
   };
 });
