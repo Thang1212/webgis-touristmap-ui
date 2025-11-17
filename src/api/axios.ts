@@ -307,10 +307,10 @@ api.interceptors.response.use(
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('webgis_user');
 
-        // Redirect to login
-        if (window.location.pathname !== '/login') {
-          window.location.href = '/login';
-        }
+        // // Redirect to login
+        // if (window.location.pathname !== '/login') {
+        //   window.location.href = '/login';
+        // }
 
         return Promise.reject(refreshError);
       }
@@ -330,4 +330,5 @@ api.interceptors.response.use(
 );
 
 export default api;
+
 export { refreshApi };
