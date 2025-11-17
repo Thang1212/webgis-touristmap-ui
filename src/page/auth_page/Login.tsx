@@ -8,7 +8,7 @@ export function LogIn() {
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <LoginForm
         onSubmit={(data) => {
-          console.log(data);
+         // console.log(data);
           // Xử lý login của bạn, rồi:
           navigate('/dashboard');
         }}

@@ -171,19 +171,19 @@ const LocationMarker: React.FC<LocationMarkerProps> = ({
     // Nếu GPS toggle OFF → Stop tracking và KHÔNG xin quyền
     if (!useGPS) {
       map.stopLocate();
-      console.log('🔴 GPS disabled - not requesting permission');
+      //console.log('🔴 GPS disabled - not requesting permission');
       return;
     }
 
     // Nếu GPS toggle ON → XIN QUYỀN và start tracking
-    console.log('🟢 GPS enabled - requesting permission...');
+  //  console.log('🟢 GPS enabled - requesting permission...');
 
     const onLocationFound = (e: L.LocationEvent) => {
       const newPosition: [number, number] = [e.latlng.lat, e.latlng.lng];
       setPosition(newPosition);
       setAccuracy(e.accuracy);
 
-      console.log('✅ Location found:', newPosition);
+     // console.log('✅ Location found:', newPosition);
 
       // Auto set origin nếu chưa có
       if (origin.coordinates[0] === 0 && origin.coordinates[1] === 0) {
@@ -214,14 +214,14 @@ const LocationMarker: React.FC<LocationMarkerProps> = ({
       .on("locationfound", onLocationFound)
       .on("locationerror", onLocationError);
 
-    console.log('📡 GPS tracking started, waiting for browser permission...');
+   // console.log('📡 GPS tracking started, waiting for browser permission...');
 
     // Cleanup
     return () => {
       map.off("locationfound", onLocationFound);
       map.off("locationerror", onLocationError);
       map.stopLocate();
-      console.log('🛑 GPS tracking stopped');
+     // console.log('🛑 GPS tracking stopped');
     };
   }, [map, setOrigin, origin.coordinates, useGPS]);
 

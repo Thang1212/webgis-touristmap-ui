@@ -166,7 +166,6 @@ fetchFilteredPlaces: async () => {
 
     // const url = `http://localhost:8000/api/places?${params.toString()}`;
     const url = `${import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api"}/places?${params.toString()}`;
-    console.log("🔍 Fetching from API:", url);
 
     const response = await fetch(url);
     if (!response.ok) {
@@ -198,11 +197,8 @@ fetchFilteredPlaces: async () => {
         updatedAt: item.updatedAt || item.updated_at || undefined,
       }));
 
-      console.log("✅ Fetched places from API:", places.length);
-      console.log(places[0]);
       set({ filteredPlaces: places, loading: false });
     } else {
-      console.log("❌ No places found");
       set({ filteredPlaces: [], loading: false });
     }
   } catch (error) {

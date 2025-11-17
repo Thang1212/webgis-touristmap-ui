@@ -7,8 +7,8 @@ interface FlyToPlaceProps {
 
 const FlyToPlace: React.FC<FlyToPlaceProps> = ({ place }) => {
   const map = useMap();
-  console.log(      place.location.coordinates[1],
-        place.location.coordinates[0],)
+  //console.log(      place.location.coordinates[1],
+    //    place.location.coordinates[0],)
   useEffect(() => {
     if (place) {
       const position: [number, number] = [

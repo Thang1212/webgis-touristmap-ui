@@ -11,7 +11,7 @@ import VideoManagement from './components/VideoManagement';
 import { UserModal } from './components/Usermodal';
 import { PlaceModal } from './components/Placemodal';
 import type { User, Place, Stats, TabType, ModalType } from '../../type/admin.types';
-import axios from 'axios';
+import axios from '../../api/axios';
 import toast from 'react-hot-toast';
 
 const AdminPage: React.FC = () => {

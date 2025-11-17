@@ -190,7 +190,7 @@ export const PlaceModal: React.FC<PlaceModalProps> = ({ place, onClose, onSucces
     }
 
     try {
-       console.log(submitData) 
+    //   console.log(submitData) 
       if (place?.id) {
         await axios.patch(`/api/admin/place/${place.id}`, submitData, {
           headers: { 'Content-Type': 'multipart/form-data' }

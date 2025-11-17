@@ -270,7 +270,6 @@ export const RoadsLayer: React.FC<RoadsLayerProps> = ({ visible, opacity }) => {
         const data = await response.json();
         setGeoData(data);
 
-        console.log(`✅ Roads [Z${Math.floor(zoom)}]: ${data.features?.length || 0} segments`);
       } catch (error: any) {
         if (error.name !== 'AbortError') {
           console.error('❌ Roads: Error loading', error);

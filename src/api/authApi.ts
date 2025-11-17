@@ -9,9 +9,9 @@ import type {
 export const authApi = {
   // Register
   register: async (data: RegisterFormData): Promise<AuthResponse> => {
-    console.log(api)
+    //console.log(api)
     const response = await api.post<AuthResponse>('/auth/register', data);
-    console.log(response)
+  //  console.log(response)
     return response.data;
   },
 

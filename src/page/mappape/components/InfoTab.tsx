@@ -17,7 +17,7 @@ const InfoTab: React.FC<InfoTabProps> = ({ place }) => {
   const getOpeningHours = () => {
     const open = formatTime(place.open_hour);
     const close = formatTime(place.close_hour);
-    console.log(open, close);
+   // console.log(open, close);
     // Kiểm tra nếu mở cửa 24/7
     if ((open === "00:00" && close === "23:59") || (!place.open_hour || !place.close_hour)) {
       return "Mở cửa 24/7";
