@@ -152,7 +152,7 @@ const FavoriteCard: React.FC<FavoriteCardProps> = ({ favorite, onRemove }) => {
 
           {/* Saved date */}
           <span className="text-xs text-gray-400">
-            {new Date(favorite.created_at).toLocaleDateString('vi-VN')}
+            {new Date(favorite.createdAt).toLocaleDateString('vi-VN')}
           </span>
         </div>
       </div>

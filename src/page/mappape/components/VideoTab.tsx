@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Play, Eye, Heart } from 'lucide-react'
-import axios from 'axios'
+import axios from '../../../api/axios'
 
 interface Video {
   id: string

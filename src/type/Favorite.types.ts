@@ -5,8 +5,8 @@ export interface Favorite {
   user_id: string;
   place_id: number;
   place?: Place; // Populated place data
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface FavoritesResponse {
