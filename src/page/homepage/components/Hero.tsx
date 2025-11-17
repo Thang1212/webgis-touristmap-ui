@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <div className="flex flex-col  justify-center px-6 sm:px-12 w-full h-full lg:bg-black/30 lg:backdrop-blur-sm pt-18 sm:pt-10 lg:pb-0 overflow-ellipsis z-10">
+    <div className="flex flex-col   justify-center px-6 sm:px-12 w-full h-full lg:bg-black/30 lg:backdrop-blur-sm pt-18 sm:pt-10 lg:pb-0 overflow-ellipsis z-10">
       <p className="text-sm sm:text-lg uppercase tracking-wider text-blue-300">
         Khám phá
       </p>
@@ -18,7 +18,7 @@ const Hero = () => {
         với bờ biển dài, bãi cát trắng mịn, và là "thủ đô resort" với nhiều khu nghỉ dưỡng cao cấp.
       </p>
       
-      <p className="mb-6 max-w-lg text-lg   leading-relaxed text-gray-100 text-[14px]">
+      <p className="mb-6 max-w-lg text-lg   leading-relaxed text-gray-100 text-[14px] hidden md:block">
         Đến Phan Thiết, du khách sẽ được tận hưởng sự yên bình của biển cả, tham gia 
         các hoạt động thể thao trên biển (như lướt ván buồm, lướt ván diều) và khám phá 
         nét đẹp độc đáo của các đồi cát vàng, đỏ trải dài vô tận.

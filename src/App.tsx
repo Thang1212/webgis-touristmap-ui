@@ -38,24 +38,37 @@ function App() {
   )
 }
 const GoogleCallback = () => {
-    const navigate = useNavigate();
-    const { checkAuth } = useAuth();
+  const navigate = useNavigate();
+  const { checkAuth } = useAuth();
 
-    useEffect(() => {
-        // Check if login successful
-        const params = new URLSearchParams(window.location.search);
-        if (params.get('success') === 'true') {
-            checkAuth(); // Refresh user data
-            navigate('/map');
-        } else {
-            navigate('/login');
-        }
-    }, []);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const success = params.get('success');
+    const fallbackAccessToken = params.get('ft');
+    const fallbackRefreshToken = params.get('fr');
 
-    return (
-        <div className="flex items-center justify-center min-h-screen">
-            <div className="text-xl">Processing Google login...</div>
-        </div>
-    );
+    if (success === 'true') {
+      // Lưu tokens vào localStorage (Firefox/Safari)
+      if (fallbackAccessToken && fallbackRefreshToken) {
+        localStorage.setItem('access_token', fallbackAccessToken);
+        localStorage.setItem('refresh_token', fallbackRefreshToken);
+        console.log('🦊 Firefox/Safari: Using localStorage');
+      } else {
+        console.log('🍪 Chrome: Using cookies');
+      }
+
+      window.history.replaceState({}, '', '/auth/callback?success=true');
+      checkAuth();
+      navigate('/map');
+    } else {
+      navigate('/login');
+    }
+  }, [navigate, checkAuth]);
+
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="text-xl">Processing Google login...</div>
+    </div>
+  );
 };
 export default App

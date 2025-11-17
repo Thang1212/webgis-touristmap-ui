@@ -78,6 +78,9 @@ const checkAuth = useCallback(async (): Promise<void> => {
   const logout = async (): Promise<void> => {
     try {
       await authApi.logout();
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('webgis_user');
       setUser(null);
     } catch (err) {
       console.error('Logout error:', err);
