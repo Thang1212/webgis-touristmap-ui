@@ -8,7 +8,7 @@ import type { Place } from '../../../type/admin.types';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import MapClickHandler from '@/page/mappape/components/MapClickHandler';
 import { MAP_CONFIG } from '@/constants/map-constants';
-import axios from 'axios';
+import axios from '../../../api/axios';
 import toast from 'react-hot-toast';
 
 interface PlaceManagementProps {

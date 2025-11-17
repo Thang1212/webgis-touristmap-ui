@@ -252,7 +252,7 @@ import {
   Loader2,
   MessageSquare
 } from 'lucide-react';
-import axios from 'axios';
+import axios from '../../../api/axios';
 import toast from 'react-hot-toast';
 
 interface User {

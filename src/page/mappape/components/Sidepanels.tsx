@@ -194,7 +194,7 @@ export const SidePanels: React.FC<SidePanelsProps> = ({
   className={`
     fixed lg:relative
     inset-y-0 left-0
-    w-[85vw] sm:w-60 lg:w-60 xl:w-80
+    w-[85vw] sm:w-80 lg:w-80 xl:w-80
     bg-transparent
     shadow-2xl lg:shadow-none
     transform transition-transform duration-300 ease-in-out

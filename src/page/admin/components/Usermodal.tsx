@@ -1,7 +1,7 @@
 import React from 'react';
 import { X, Save, Mail } from 'lucide-react';
 import type { User } from '../../../type/admin.types';
-import axios from 'axios';
+import axios from '../../../api/axios';
 import toast from 'react-hot-toast';
 
 interface UserModalProps {

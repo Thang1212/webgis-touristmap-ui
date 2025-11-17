@@ -9,15 +9,15 @@ import {
 } from "@/components/ui/resizable";
 
 const Homepage = () => {
-  const [bgImage, setBgImage] = useState("/public/homepage.jpg");
+  const [bgImage, setBgImage] = useState("/homepage.jpg");
   const [direction, setDirection] = useState<"horizontal" | "vertical">("horizontal");
 
   const destinations = [
-    { name: "Bãi Đá Ông Địa", place: "Phan Thiết", rating: 4.5, img: "/public/homepage1.jpg" },
-    { name: "Đồi Cát Bay", place: "Mũi Né", rating: 4.3, img: "/public/homepage2.jpg" },
-    { name: "Suối Tiên", place: "Mũi Né", rating: 4.4, img: "/public/homepage3.jpg" },
-    { name: "Hòn Rơm", place: "Mũi Né", rating: 4, img: "/public/homepage4.jpg" },
-    { name: "Tháp Chàm Poshanu", place: "Phan Thiết", rating: 4.4, img: "/public/homepage5.jpg" },
+    { name: "Bãi Đá Ông Địa", place: "Phan Thiết", rating: 4.5, img: "/homepage1.jpg" },
+    { name: "Đồi Cát Bay", place: "Mũi Né", rating: 4.3, img: "/homepage2.jpg" },
+    { name: "Suối Tiên", place: "Mũi Né", rating: 4.4, img: "/homepage3.jpg" },
+    { name: "Hòn Rơm", place: "Mũi Né", rating: 4, img: "/homepage4.jpg" },
+    { name: "Tháp Chàm Poshanu", place: "Phan Thiết", rating: 4.4, img: "/homepage5.jpg" },
   ];
 
   useEffect(() => {
