@@ -55,7 +55,9 @@ const PlaceManagement = forwardRef<PlaceManagementRef, PlaceManagementProps>(
     useEffect(() => {
       const fetchCategories = async () => {
         try {
-          const response = await axios.get('/api/places/categories');
+          // const response = await axios.get('/api/places/categories');
+          const response = await axios.get('/places/categories');
+
           setCategories(response.data.data || []);
         } catch (error) {
           console.error('Error fetching categories:', error);
@@ -76,7 +78,9 @@ const PlaceManagement = forwardRef<PlaceManagementRef, PlaceManagementProps>(
         if (searchText) params.searchText = searchText;
         if (categoryFilter) params.categories = categoryFilter;
 
-        const response = await axios.get('/api/admin/places/', { params });
+        // const response = await axios.get('/api/admin/places/', { params });
+        const response = await axios.get('/admin/places/', { params });
+
         
         setPlaces(response.data.data);
         setPagination(response.data.pagination);

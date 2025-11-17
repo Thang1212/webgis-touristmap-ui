@@ -344,7 +344,9 @@ const ReviewManagement: React.FC<ReviewManagementProps> = ({
 
       // Determine which endpoint to use
       const hasFilters = debouncedKeyword || ratingFilter || startDate || endDate;
-      const endpoint = hasFilters ? '/api/admin/reviews/search' : '/api/admin/reviews';
+      // const endpoint = hasFilters ? '/api/admin/reviews/search' : '/api/admin/reviews';
+      const endpoint = hasFilters ? '/admin/reviews/search' : '/admin/reviews';
+
 
       const params: any = {
         page: pagination.currentPage,
@@ -378,7 +380,7 @@ const ReviewManagement: React.FC<ReviewManagementProps> = ({
     if (!window.confirm('Bạn có chắc muốn xóa review này?')) return;
 
     try {
-      await axios.delete(`/api/reviews/${reviewId}`, {
+      await axios.delete(`/reviews/${reviewId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
