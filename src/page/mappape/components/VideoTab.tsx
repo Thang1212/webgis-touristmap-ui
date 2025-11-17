@@ -32,7 +32,7 @@ const VideoTab: React.FC<VideoTabProps> = ({ place }) => {
   const fetchVideos = async () => {
   try {
     setLoading(true)
-    const res = await axios.get(`/api/video/${place.id}`)
+    const res = await axios.get(`/video/${place.id}`)
     const data = res.data
     
     // Always update videos, even if empty
