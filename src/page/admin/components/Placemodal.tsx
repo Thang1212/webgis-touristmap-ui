@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Save, Phone, Globe, Clock, MapPin, MapPinned, Search, Loader2, AlertCircle } from 'lucide-react';
 import type { Place } from '../../../type/admin.types';
-import axios from 'axios';
+import axios from '../../../api/axios';
 import toast from 'react-hot-toast';
 import geocodingService from '../../../services/geocoding.service';
 
@@ -564,4 +564,5 @@ export const PlaceModal: React.FC<PlaceModalProps> = ({ place, onClose, onSucces
       </div>
     </div>
   );
+
 };
