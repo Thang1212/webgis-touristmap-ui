@@ -53,7 +53,7 @@ export const PlaceModal: React.FC<PlaceModalProps> = ({ place, onClose, onSucces
     const fetchCategories = async () => {
       setLoadingCategories(true);
       try {
-        const response = await axios.get('/api/places/categories');
+        const response = await axios.get('/places/categories');
         setCategories(response.data.data || []);
       } catch (error) {
         console.error('Error loading categories:', error);
@@ -192,12 +192,12 @@ export const PlaceModal: React.FC<PlaceModalProps> = ({ place, onClose, onSucces
     try {
     //   console.log(submitData) 
       if (place?.id) {
-        await axios.patch(`/api/admin/place/${place.id}`, submitData, {
+        await axios.patch(`/admin/place/${place.id}`, submitData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
         toast.success('Cập nhật địa điểm thành công!');
       } else {
-        await axios.post('/api/admin/place', submitData, {
+        await axios.post('/admin/place', submitData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
         toast.success('Thêm địa điểm thành công!');
@@ -566,3 +566,4 @@ export const PlaceModal: React.FC<PlaceModalProps> = ({ place, onClose, onSucces
   );
 
 };
+
