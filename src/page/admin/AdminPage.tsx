@@ -84,7 +84,7 @@ const AdminPage: React.FC = () => {
   const handleDeleteUser = async (userId: string): Promise<void> => {
     if (window.confirm('Bạn có chắc muốn xóa user này?')) {
       try {
-        await axios.delete(`/api/admin/${userId}`);
+        await axios.delete(`/admin/${userId}`);
         toast.success('Xóa user thành công!');
         setUsers((prev) => prev.filter((user) => user.id !== userId));
       } catch (error: any) {
@@ -108,7 +108,7 @@ const AdminPage: React.FC = () => {
   const handleDeletePlace = async (placeId: number): Promise<void> => {
     if (window.confirm('Bạn có chắc muốn xóa địa điểm này?')) {
       try {
-        await axios.delete(`/api/admin/place/${placeId}`);
+        await axios.delete(`/admin/place/${placeId}`);
         toast.success('Xóa địa điểm thành công!');
         // No need to update state here, PlaceManagement will refresh itself
       } catch (error: any) {
@@ -286,3 +286,4 @@ const NavButton: React.FC<NavButtonProps> = ({ icon, label, active, onClick }) =
 );
 
 export default AdminPage;
+
