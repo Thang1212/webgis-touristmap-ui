@@ -59,7 +59,7 @@ export const RoadsLayer: React.FC<RoadsLayerProps> = ({ visible, opacity }) => {
 
         // ✅ Pass zoom level to backend
         const response = await fetch(
-          `https://funky-gem-accommodate-arch.trycloudflare.com/api/map/roads/geojson?bounds=${boundsStr}&zoom=${Math.floor(zoom)}`,
+          `https://apparatus-notes-cure-newsletters.trycloudflare.com/api/map/roads/geojson?bounds=${boundsStr}&zoom=${Math.floor(zoom)}`,
           { signal: fetchControllerRef.current.signal }
         );
         
@@ -348,5 +348,6 @@ const getTypeLabel = (type?: string): string => {
   
   return labels[type || 'unclassified'] || '📍 Đường';
 };
+
 
 export default RoadsLayer;
