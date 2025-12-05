@@ -247,7 +247,7 @@ const {clearRoute} = useRoutingStore()
             <button
               onClick={() => {onSelect(place)
                 clearRoute()
-                |}
+                |}}
               className="w-full px-3 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors"
             >
               Xem chi tiết
@@ -261,3 +261,4 @@ const {clearRoute} = useRoutingStore()
 
 
 export default PlaceMarker;
+
