@@ -763,7 +763,7 @@ const ChatBot: React.FC = () => {
                       <div className="mt-2 space-y-1.5 pl-0.5">
                         <p className="text-[10px] text-gray-600 font-semibold flex items-center gap-1">
                           <MapPin className="w-3 h-3 text-blue-600" />
-                          Gợi ý ({msg.relevantPlaces.length})
+                          Gợi ý 
                         </p>
                         <div className="space-y-1.5">
                           {msg.relevantPlaces.slice(0, 3).map((place, idx) => (
@@ -932,5 +932,6 @@ const ChatBot: React.FC = () => {
     </>
   );
 };
+
 
 export default ChatBot;
