@@ -233,7 +233,7 @@ const VideoManagement: React.FC<VideoManagementProps> = ({
                                           const target = e.currentTarget;
                                           if (!target.dataset.error) {
                                             target.dataset.error = "true";
-                                            target.src =  `/public/tiktok.png`;
+                                            target.src =  `/tiktok.png`;
                                           }
                                         }}
                                       />
@@ -350,3 +350,4 @@ const VideoManagement: React.FC<VideoManagementProps> = ({
 
 
 export default VideoManagement;
+
