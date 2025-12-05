@@ -132,7 +132,7 @@ const RoutingTab = () => {
               <p className={`text-xs mt-0.5 ${
                 pickMode === 'origin' ? 'text-green-700' : 'text-red-700'
               }`}>
-                Click vào bản đồ để chọn vị trí • <kbd className="px-1.5 py-0.5 bg-white rounded border text-[10px]">ESC</kbd> để hủy
+                Click vào bản đồ để chọn vị trí 
               </p>
             </div>
             <button
@@ -354,5 +354,6 @@ const RoutingTab = () => {
     </div>
   )
 }
+
 
 export default RoutingTab
