@@ -155,7 +155,7 @@ const VideoTab: React.FC<VideoTabProps> = ({ place }) => {
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement
-                    target.src = `/public/tiktok.png`
+                    target.src = `/tiktok.png`
                   }}
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -211,4 +211,5 @@ const VideoTab: React.FC<VideoTabProps> = ({ place }) => {
 }
 
 export default VideoTab
+
 
