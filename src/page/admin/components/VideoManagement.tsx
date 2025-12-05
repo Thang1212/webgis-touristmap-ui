@@ -223,15 +223,20 @@ const VideoManagement: React.FC<VideoManagementProps> = ({
                     <tr key={video.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4">
                         <div className="flex items-start gap-3">
-                          {video.thumbnail && (
-                            <img  referrerPolicy="no-referrer"
-                              src={video.thumbnail} 
-                              alt={video.title}
-                              className="w-24 h-16 rounded object-cover"
-                              onError={(e) => {
-                                e.currentTarget.src = 'https://via.placeholder.com/120x80?text=No+Image';
-                              }}
-                            />
+                          {video.thumbnail && ( 
+                                  <img
+                                        referrerPolicy="no-referrer"
+                                        src={video.thumbnail}
+                                        alt={video.title}
+                                        className="w-24 h-16 rounded object-cover"
+                                        onError={(e) => {
+                                          const target = e.currentTarget;
+                                          if (!target.dataset.error) {
+                                            target.dataset.error = "true";
+                                            target.src =  `/public/tiktok.png`;
+                                          }
+                                        }}
+                                      />
                           )}
                           <div className="max-w-xs">
                             <div className="font-medium text-gray-900 text-sm line-clamp-2">
@@ -342,5 +347,6 @@ const VideoManagement: React.FC<VideoManagementProps> = ({
     </div>
   );
 };
+
 
 export default VideoManagement;
