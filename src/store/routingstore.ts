@@ -255,9 +255,10 @@ export const useRoutingStore = create<Routing>((set, get) => ({
             type: 'Point',
             coordinates: [0, 0]
         },
-        destination: {
-            type: 'Point',
-            coordinates: [0, 0]
-        }
+      //  destination: {
+      //      type: 'Point',
+      //      coordinates: [0, 0]
+      //  }
     })
+
 }));
