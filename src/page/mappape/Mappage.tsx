@@ -131,12 +131,7 @@ const MapView: React.FC = () => {
             administrativeLayer={administrativeLayer}
             cqlFilter={cqlFilter}
           /> */}
-           {roadsLayer && (
-          <RoadsLayer
-            visible={roadsLayer.visible}
-            opacity={roadsLayer.opacity || 0.8}
-          />
-        )}
+          
           {/* GPS Location Marker */}
           {useGPS && <LocationMarker showMarker={true} />}
 
