@@ -4,6 +4,7 @@ import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import { getIcon } from "../../../utils/mapIcon";
 import type { Place, Category } from "../../../store/mapstore";
+import { useRoutingStore } from "@/store/routingstore";
 
 interface PlaceMarkerProps {
   place: Place;
@@ -262,5 +263,6 @@ const {clearRoute} = useRoutingStore()
 
 
 export default PlaceMarker;
+
 
 
