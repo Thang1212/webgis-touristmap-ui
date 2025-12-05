@@ -95,16 +95,6 @@ export const INITIAL_LAYERS: LayerConfig[] = [
     description: "Chỉ đường từ điểm A đến B",
   },
   {
-    id: "roads",
-    name: "Đường phố",
-    visible: true,
-    opacity: 0.8,
-    icon: "🛣️",
-    color: "#f59e0b",
-    description: "Mạng lưới đường giao thông",
-  },
- 
-  {
     id: "satelite",
     name: "Vệ tinh",
     visible: true,
@@ -148,3 +138,4 @@ export const BREAKPOINTS = {
   tablet: 768,
   desktop: 1024,
 };
+
