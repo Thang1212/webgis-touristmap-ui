@@ -166,6 +166,8 @@ const destinationIcon = new L.Icon({
 });
 
 const MapClickHandler = () => {
+  const [showOriginMarker, setShowOriginMarker] = useState(true);
+  const [showDestinationMarker, setShowDestinationMarker] = useState(true);
   const map = useMap();
   const { 
     pickMode, 
@@ -275,37 +277,40 @@ const MapClickHandler = () => {
           </Popup>
         </Marker>
       )}
-      {destination && isValidCoordinates(destination.coordinates) && (
-        <Marker 
-          position={[destination.coordinates[1], destination.coordinates[0]]}
-          icon={destinationIcon}
-          zIndexOffset={1000}
-          eventHandlers={{
-            click: handleRemoveDestination
+      {destination && isValidCoordinates(destination.coordinates) && showDestinationMarker && (
+  <Marker 
+    position={[destination.coordinates[1], destination.coordinates[0]]}
+    icon={destinationIcon}
+    zIndexOffset={1000}
+  >
+    <Popup>
+      <div className="text-center">
+        <div className="font-semibold text-red-600 mb-2">
+          🎯 Điểm đến
+        </div>
+        <div className="text-xs text-gray-600 mb-3">
+          {destination.coordinates[1].toFixed(6)}, {destination.coordinates[0].toFixed(6)}
+        </div>
+        
+        {/* ⭐ Single button - Chỉ ẩn marker */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            clearRoute()
+            setShowDestinationMarker(false);
           }}
+          className="w-full px-3 py-1.5 bg-gray-500 hover:bg-gray-600 text-white text-sm rounded flex items-center justify-center gap-1 transition-colors"
         >
-          <Popup>
-            <div className="text-center">
-              <div className="font-semibold text-red-600 mb-2">🎯 Điểm đến</div>
-              <div className="text-xs text-gray-600 mb-3">
-                {destination.coordinates[1].toFixed(6)}, {destination.coordinates[0].toFixed(6)}
-              </div>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  clearDestination();
-                }}
-                className="w-full px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white text-sm rounded flex items-center justify-center gap-1 transition-colors"
-              >
-                <X size={14} />
-                Xóa điểm đến
-              </button>
-            </div>
-          </Popup>
-        </Marker>
-      )}
+          <X size={14} />
+          Xóa địa điểm
+        </button>
+      </div>
+    </Popup>
+  </Marker>
+)}
     </>
   );
 };
+
 
 export default MapClickHandler;
