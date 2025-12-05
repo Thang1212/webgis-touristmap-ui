@@ -26,6 +26,7 @@ const PlaceMarker: React.FC<PlaceMarkerProps> = ({
     place.location.coordinates[1],
     place.location.coordinates[0],
   ];
+const {clearRoute} = useRoutingStore()
 
   const getPrimaryCategory = (categories: Category[]): string => {
     if (!categories || categories.length === 0) return "";
@@ -244,7 +245,9 @@ const PlaceMarker: React.FC<PlaceMarkerProps> = ({
             )}
 
             <button
-              onClick={() => onSelect(place)}
+              onClick={() => {onSelect(place)
+                clearRoute()
+                |}
               className="w-full px-3 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors"
             >
               Xem chi tiết
@@ -255,5 +258,6 @@ const PlaceMarker: React.FC<PlaceMarkerProps> = ({
     </Marker>
   );
 };
+
 
 export default PlaceMarker;
