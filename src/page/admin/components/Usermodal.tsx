@@ -25,10 +25,10 @@ export const UserModal: React.FC<UserModalProps> = ({ user, onClose, onSuccess }
     e.preventDefault();
     try {
       if (isEdit) {
-        await axios.patch(`/api/admin/${user.id}`, formData);
+        await axios.patch(`/admin/${user.id}`, formData);
         toast.success('Đã cập nhật thông tin người dùng');
       } else {
-        await axios.post('/api/admin', formData);
+        await axios.post('/admin', formData);
         toast.success('Đã thêm người dùng mới');
       }
       onSuccess();
@@ -136,4 +136,5 @@ export const UserModal: React.FC<UserModalProps> = ({ user, onClose, onSuccess }
       </div>
     </div>
   );
+
 };
