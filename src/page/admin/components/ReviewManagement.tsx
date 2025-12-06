@@ -381,9 +381,9 @@ const ReviewManagement: React.FC<ReviewManagementProps> = ({
 
     try {
       await axios.delete(`/reviews/${reviewId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
+        //headers: {
+          //Authorization: `Bearer ${localStorage.getItem('token')}`,
+        //},
       });
 
       toast.success('Xóa review thành công!');
@@ -812,5 +812,6 @@ const ReviewManagement: React.FC<ReviewManagementProps> = ({
     </div>
   );
 };
+
 
 export default ReviewManagement;
